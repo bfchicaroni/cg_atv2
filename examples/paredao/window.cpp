@@ -1,4 +1,5 @@
 #include "window.hpp"
+#include <cstdio>
 
 void Window::onEvent(SDL_Event const &event) {
   // Keyboard events
@@ -121,17 +122,16 @@ void Window::onDestroy() {
 }
 
 void Window::checkCollisions() {
-  // Check collision between ball and wall
-  if (m_ball.m_translation.x > 0.9) {
-  }
-  if (m_ball.m_translation.x < -0.9) {
-  }
-  if (m_ball.m_translation.y > 0.9) {
+  // Check collision between ball and bar
+  if (m_ball.m_translation.y < -0.85f) {
+    if (glm::distance(m_ball.m_translation, m_bar.m_translation) < 0.3) {
+      m_ball.m_velocity.y = m_ball.m_velocity.y;
+    }
   }
 }
 
 void Window::checkWinCondition() {
-  if (m_ball.m_translation.y < -0.9) {
+  if (m_ball.m_translation.y < -0.92f) {
     m_gameData.m_state = State::GameOver;
     m_restartWaitTimer.restart();
   }
