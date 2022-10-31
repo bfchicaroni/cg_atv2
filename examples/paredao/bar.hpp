@@ -13,7 +13,6 @@ public:
   void update(GameData const &gameData, float deltaTime);
 
   glm::vec4 m_color{1};
-  float m_rotation{};
   float m_scale{0.125f};
   glm::vec2 m_translation{};
   glm::vec2 m_velocity{};
@@ -26,7 +25,6 @@ private:
   GLint m_translationLoc{};
   GLint m_colorLoc{};
   GLint m_scaleLoc{};
-  GLint m_rotationLoc{};
 
   GLuint m_VAO{};
   GLuint m_VBO{};

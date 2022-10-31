@@ -1,5 +1,6 @@
 #include "bar.hpp"
 
+#include <glm/fwd.hpp>
 #include <glm/gtx/fast_trigonometry.hpp>
 
 void Bar::create(GLuint program) {
@@ -13,7 +14,7 @@ void Bar::create(GLuint program) {
   m_translationLoc = abcg::glGetUniformLocation(m_program, "translation");
 
   // Reset bar attributes
-  m_translation = glm::vec2(0);
+  m_translation = glm::vec2{0, -0.975};
 
   // clang-format off
   std::array positions{
@@ -110,8 +111,15 @@ void Bar::destroy() {
 
 void Bar::update(GameData const &gameData, float deltaTime) {
   // Rotate
-  if (gameData.m_input[gsl::narrow<size_t>(Input::Left)])
-    m_rotation = glm::wrapAngle(m_rotation + 4.0f * deltaTime);
-  if (gameData.m_input[gsl::narrow<size_t>(Input::Right)])
-    m_rotation = glm::wrapAngle(m_rotation - 4.0f * deltaTime);
+  if (gameData.m_input[gsl::narrow<size_t>(Input::Left)]){
+    if(m_translation.x > - 0.825) {
+      m_translation = glm::vec2{m_translation.x-deltaTime, -0.975};
+    }
+  }
+  if (gameData.m_input[gsl::narrow<size_t>(Input::Right)]) {
+    if(m_translation.x < 0.825) {
+      m_translation = glm::vec2{m_translation.x+deltaTime, -0.975};
+    }
+  }
+  
 }

@@ -27,10 +27,10 @@ void Ball::create(GLuint program) {
 
   // Get a random direction
   glm::vec2 direction{m_randomDist(re), m_randomDist(re)};
-  if (direction.y < 0) {
+  while (direction.y < 0) {
     direction.y = m_randomDist(re);
   }
-  m_velocity = glm::normalize(direction) / 3.0f;
+  m_velocity = glm::normalize(direction) / 2.0f;
 
   // Create geometry data
   std::vector<glm::vec2> positions{{0, 0}};
