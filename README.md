@@ -4,7 +4,7 @@
 Nome: Beatriz Favini Chicaroni  
 RA 11201721608
 
-O projeto é um protótipo do jogo conhecido como Paredão do Telejogo da Panasonic.
+O projeto é um protótipo do jogo conhecido como Paredão do Telejogo da Philco.
 
 O objetivo do jogo é impedir a bolinha de chegar na margem inferior.
 
