@@ -7,7 +7,6 @@
 
 #include "ball.hpp"
 #include "bar.hpp"
-#include "bullets.hpp"
 
 class Window : public abcg::OpenGLWindow {
 protected:
@@ -29,8 +28,7 @@ private:
 
   GameData m_gameData;
 
-  Balls m_ball;
-  Bullets m_bullets;
+  Ball m_ball;
   Bar m_bar;
 
   abcg::Timer m_restartWaitTimer;

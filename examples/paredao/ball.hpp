@@ -9,28 +9,22 @@
 #include "bar.hpp"
 #include "gamedata.hpp"
 
-class Balls {
+class Ball {
 public:
-  void create(GLuint program, int quantity);
+  void create(GLuint program);
   void paint();
   void destroy();
   void update(const Bar &bar, float deltaTime);
 
-  struct Ball {
-    GLuint m_VAO{};
-    GLuint m_VBO{};
+  GLuint m_VAO{};
+  GLuint m_VBO{};
 
-    glm::vec4 m_color{1};
-    bool m_hit{};
-    int m_polygonSides{};
-    float m_scale{};
-    glm::vec2 m_translation{};
-    glm::vec2 m_velocity{};
-  };
-
-  std::list<Ball> m_ball;
-
-  Ball makeBall(glm::vec2 translation = {}, float scale = 0.25f);
+  glm::vec4 m_color{1};
+  bool m_hit{};
+  int m_polygonSides{};
+  float m_scale{0.125f};
+  glm::vec2 m_translation{};
+  glm::vec2 m_velocity{};
 
 private:
   GLuint m_program{};

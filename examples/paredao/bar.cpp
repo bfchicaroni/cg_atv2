@@ -1,7 +1,6 @@
 #include "bar.hpp"
 
 #include <glm/gtx/fast_trigonometry.hpp>
-#include <glm/gtx/rotate_vector.hpp>
 
 void Bar::create(GLuint program) {
   destroy();
@@ -10,14 +9,11 @@ void Bar::create(GLuint program) {
 
   // Get location of uniforms in the program
   m_colorLoc = abcg::glGetUniformLocation(m_program, "color");
-  m_rotationLoc = abcg::glGetUniformLocation(m_program, "rotation");
   m_scaleLoc = abcg::glGetUniformLocation(m_program, "scale");
   m_translationLoc = abcg::glGetUniformLocation(m_program, "translation");
 
   // Reset bar attributes
-  m_rotation = 0.0f;
   m_translation = glm::vec2(0);
-  m_velocity = glm::vec2(0);
 
   // clang-format off
   std::array positions{
@@ -78,7 +74,6 @@ void Bar::paint(const GameData &gameData) {
   abcg::glBindVertexArray(m_VAO);
 
   abcg::glUniform1f(m_scaleLoc, m_scale);
-  abcg::glUniform1f(m_rotationLoc, m_rotation);
   abcg::glUniform2fv(m_translationLoc, 1, &m_translation.x);
 
   // Restart thruster blink timer every 100 ms
@@ -119,12 +114,4 @@ void Bar::update(GameData const &gameData, float deltaTime) {
     m_rotation = glm::wrapAngle(m_rotation + 4.0f * deltaTime);
   if (gameData.m_input[gsl::narrow<size_t>(Input::Right)])
     m_rotation = glm::wrapAngle(m_rotation - 4.0f * deltaTime);
-
-  // Apply thrust
-  if (gameData.m_input[gsl::narrow<size_t>(Input::Up)] &&
-      gameData.m_state == State::Playing) {
-    // Thrust in the forward vector
-    auto const forward{glm::rotate(glm::vec2{0.0f, 1.0f}, m_rotation)};
-    m_velocity += forward * deltaTime;
-  }
 }

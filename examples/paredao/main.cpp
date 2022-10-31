@@ -11,7 +11,7 @@ int main(int argc, char **argv) {
         .height = 600,
         .showFPS = false,
         .showFullscreenButton = false,
-        .title = "Ball",
+        .title = "Paredão",
     });
 
     app.run(window);

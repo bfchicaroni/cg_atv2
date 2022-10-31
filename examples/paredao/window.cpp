@@ -82,8 +82,7 @@ void Window::restart() {
   m_gameData.m_state = State::Playing;
 
   m_bar.create(m_objectsProgram);
-  m_ball.create(m_objectsProgram, 1);
-  m_bullets.create(m_objectsProgram);
+  m_ball.create(m_objectsProgram);
 }
 
 void Window::onUpdate() {
@@ -98,7 +97,6 @@ void Window::onUpdate() {
 
   m_bar.update(m_gameData, deltaTime);
   m_ball.update(m_bar, deltaTime);
-  m_bullets.update(m_bar, m_gameData, deltaTime);
 
   if (m_gameData.m_state == State::Playing) {
     checkCollisions();
@@ -111,7 +109,6 @@ void Window::onPaint() {
   abcg::glViewport(0, 0, m_viewportSize.x, m_viewportSize.y);
 
   m_ball.paint();
-  m_bullets.paint();
   m_bar.paint(m_gameData);
 }
 
@@ -152,62 +149,21 @@ void Window::onDestroy() {
   abcg::glDeleteProgram(m_objectsProgram);
 
   m_ball.destroy();
-  m_bullets.destroy();
   m_bar.destroy();
 }
 
 void Window::checkCollisions() {
-  // Check collision between bar and ball
-  for (auto const &ball : m_ball.m_ball) {
-    auto const ballTranslation{ball.m_translation};
-    auto const distance{glm::distance(m_bar.m_translation, ballTranslation)};
-
-    if (distance < m_bar.m_scale * 0.9f + ball.m_scale * 0.85f) {
-      m_gameData.m_state = State::GameOver;
-      m_restartWaitTimer.restart();
-    }
+  // Check collision between ball and wall
+  if (m_ball.m_translation.x > 0.9) {
   }
-
-  // Check collision between bullets and ball
-  for (auto &bullet : m_bullets.m_bullets) {
-    if (bullet.m_dead)
-      continue;
-
-    for (auto &ball : m_ball.m_ball) {
-      for (auto const i : {-2, 0, 2}) {
-        for (auto const j : {-2, 0, 2}) {
-          auto const ballTranslation{ball.m_translation + glm::vec2(i, j)};
-          auto const distance{
-              glm::distance(bullet.m_translation, ballTranslation)};
-
-          if (distance < m_bullets.m_scale + ball.m_scale * 0.85f) {
-            ball.m_hit = true;
-            bullet.m_dead = true;
-          }
-        }
-      }
-    }
-
-    // Break ball marked as hit
-    for (auto const &ball : m_ball.m_ball) {
-      if (ball.m_hit && ball.m_scale > 0.10f) {
-        std::uniform_real_distribution randomDist{-1.0f, 1.0f};
-        std::generate_n(std::back_inserter(m_ball.m_ball), 3, [&]() {
-          glm::vec2 const offset{randomDist(m_randomEngine),
-                                 randomDist(m_randomEngine)};
-          auto const newScale{ball.m_scale * 0.5f};
-          return m_ball.makeBall(ball.m_translation + offset * newScale,
-                                 newScale);
-        });
-      }
-    }
-
-    m_ball.m_ball.remove_if([](auto const &a) { return a.m_hit; });
+  if (m_ball.m_translation.x < -0.9) {
+  }
+  if (m_ball.m_translation.y > 0.9) {
   }
 }
 
 void Window::checkWinCondition() {
-  if (m_ball.m_bm_translation.x <) {
+  if (m_ball.m_translation.y < -0.9) {
     m_gameData.m_state = State::Win;
     m_restartWaitTimer.restart();
   }
