@@ -94,13 +94,11 @@ void Ball::update(const Bar &bar, float deltaTime) {
   m_translation -= bar.m_velocity * deltaTime;
   m_translation += m_velocity * deltaTime;
 
-  // Wrap-around
-  if (m_translation.x < -1.0f)
-    m_translation.x += 2.0f;
-  if (m_translation.x > +1.0f)
-    m_translation.x -= 2.0f;
-  if (m_translation.y < -1.0f)
-    m_translation.y += 2.0f;
-  if (m_translation.y > +1.0f)
-    m_translation.y -= 2.0f;
+  // Colisões nas paredes
+  if (m_translation.x < -0.97f)
+    m_velocity.x = -m_velocity.x;
+  if (m_translation.x > +0.97f)
+    m_velocity.x = -m_velocity.x;
+  if (m_translation.y > +0.97f)
+    m_velocity.y = -m_velocity.y;
 }
